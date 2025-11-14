@@ -5,12 +5,18 @@
   "description": "Add Google Calendar events quickly using customizable context menu shortcuts.",
   "permissions": ["storage"],
   "host_permissions": ["https://calendar.google.com/*"],
+  "icons": {
+    "128": "icons/icon-128.png"
+  },
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "Quick Add Menu"
+    "default_title": "Quick Add Menu",
+    "default_icon": {
+      "128": "icons/icon-128.png"
+    }
   },
   "content_scripts": [
     {
