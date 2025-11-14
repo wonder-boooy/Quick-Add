@@ -147,6 +147,29 @@ body {
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(59, 130, 246, 0.08));
   border: 1px solid rgba(99, 102, 241, 0.25);
   box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  user-select: none;
+}
+
+.menu-list__content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.menu-list__drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  color: rgba(37, 99, 235, 0.65);
+  font-size: 14px;
+  cursor: grab;
+}
+
+.menu-list__item:active .menu-list__drag-handle {
+  cursor: grabbing;
 }
 
 
@@ -193,6 +216,23 @@ body {
 .menu-list__button:last-of-type:focus {
   background: rgba(239, 68, 68, 0.2);
   box-shadow: 0 6px 14px rgba(239, 68, 68, 0.25);
+}
+
+.menu-list__item--hidden {
+  display: none !important;
+}
+
+.menu-list__placeholder {
+  border-radius: 14px;
+  border: 2px dashed rgba(99, 102, 241, 0.4);
+  background: rgba(59, 130, 246, 0.12);
+  transition: background-color 0.2s ease;
+}
+
+.menu-list__drag-preview {
+  opacity: 0.9;
+  transform: translateY(0);
+  filter: drop-shadow(0 10px 16px rgba(59, 130, 246, 0.2));
 }
 
 .menu-list__empty {
