@@ -1,32 +1,15 @@
 #quick-add-calendar-menu {
   position: absolute;
   z-index: 99999;
-  min-width: 200px;
-  padding: 8px;
-  background: rgba(15, 23, 42, 0.75);
-  color: #f8fafc;
-  border-radius: 14px;
-  border: 1px solid rgba(148, 163, 184, 0.32);
-  box-shadow: 0 28px 50px rgba(15, 23, 42, 0.32);
+  min-width: 160px;
+  background-color: #ffffff;
+  color: #202124;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(60, 64, 67, 0.3);
   font-family: 'Roboto', 'Noto Sans JP', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   overflow: hidden;
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  transform-origin: top left;
-  animation: quick-add-menu-enter 140ms ease;
-  animation-fill-mode: both;
-}
-
-#quick-add-calendar-menu::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.32), rgba(236, 72, 153, 0.16));
-  opacity: 0.22;
-  pointer-events: none;
-  z-index: 0;
+  border: 1px solid rgba(60, 64, 67, 0.2);
 }
 
 #quick-add-calendar-menu.hidden {
@@ -34,14 +17,9 @@
 }
 
 .quick-add-menu__list {
-  position: relative;
-  z-index: 1;
   list-style: none;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  padding: 4px 0;
 }
 
 .quick-add-menu__item {
@@ -50,77 +28,26 @@
 }
 
 .quick-add-menu__button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: block;
   width: 100%;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 10px;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
   color: inherit;
   text-align: left;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  line-height: 1.35;
   cursor: pointer;
-  transition: transform 0.12s ease, border-color 0.18s ease, background 0.18s ease,
-    box-shadow 0.18s ease;
-  overflow: hidden;
+  transition: background-color 0.15s ease;
 }
 
 .quick-add-menu__button:hover,
-.quick-add-menu__button:focus-visible {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.24), rgba(129, 140, 248, 0.22));
-  border-color: rgba(148, 163, 184, 0.5);
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
-  transform: translateY(-1px);
-  outline: none;
-}
-
 .quick-add-menu__button:focus {
+  background-color: rgba(66, 133, 244, 0.08);
   outline: none;
-}
-
-.quick-add-menu__button:active {
-  transform: translateY(0);
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(129, 140, 248, 0.2));
-  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.22);
 }
 
 .quick-add-menu__empty {
-  position: relative;
-  z-index: 1;
-  padding: 14px;
-  border-radius: 12px;
-  color: rgba(226, 232, 240, 0.75);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px dashed rgba(148, 163, 184, 0.4);
-  text-align: center;
-  font-weight: 500;
-}
-
-@keyframes quick-add-menu-enter {
-  from {
-    opacity: 0;
-    transform: scale(0.94) translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #quick-add-calendar-menu {
-    animation-duration: 0.01ms;
-  }
-
-  .quick-add-menu__button {
-    transition: none;
-  }
+  padding: 12px 16px;
+  color: rgba(60, 64, 67, 0.7);
 }
 
 .quick-add-loading {
