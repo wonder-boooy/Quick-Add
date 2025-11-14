@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quick Add メニュー</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <header class="popup__header">
+        <h1 class="popup__title">Quick Add メニュー</h1>
+        <p class="popup__description">Google カレンダーの右クリックメニューをカスタマイズします。</p>
+      </header>
+      <section class="popup__section">
+        <form id="add-form" class="add-form">
+          <label for="menu-input" class="add-form__label">項目を追加</label>
+          <div class="add-form__controls">
+            <input id="menu-input" class="add-form__input" type="text" placeholder="例）【開発】" autocomplete="off" required />
+            <button type="submit" class="add-form__submit">追加</button>
+          </div>
+        </form>
+      </section>
+      <section class="popup__section">
+        <h2 class="popup__subtitle">現在のメニュー</h2>
+        <ul id="menu-list" class="menu-list" aria-live="polite"></ul>
+      </section>
+    </main>
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>

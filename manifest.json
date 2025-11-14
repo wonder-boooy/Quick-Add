@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Quick Add for Google Calendar",
+  "version": "1.0.0",
+  "description": "Add Google Calendar events quickly using customizable context menu shortcuts.",
+  "permissions": ["storage"],
+  "host_permissions": ["https://calendar.google.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Quick Add Menu"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://calendar.google.com/*"],
+      "js": ["content/contentScript.js"],
+      "css": ["content/contentStyles.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
