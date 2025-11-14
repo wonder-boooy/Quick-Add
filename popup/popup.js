@@ -201,10 +201,7 @@ function renderMenu() {
     handleElement.setAttribute('aria-hidden', 'true');
     handleElement.setAttribute('title', 'ドラッグで並び替え');
     handleElement.setAttribute('draggable', 'false');
-
-    const handleIcon = document.createElement('span');
-    handleIcon.className = 'menu-list__handle-icon';
-    handleElement.appendChild(handleIcon);
+    handleElement.textContent = '⋮⋮';
 
     const actionContainer = document.createElement('div');
     actionContainer.className = 'menu-list__actions';

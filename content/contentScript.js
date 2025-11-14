@@ -55,47 +55,19 @@ function renderMenuItems() {
 function showMenu(x, y) {
   const container = createMenuElement();
   container.classList.remove('hidden');
-
-  const safetyMargin = 12;
-  const { innerWidth, innerHeight, scrollX, scrollY } = window;
-  const availableWidth = innerWidth - safetyMargin * 2;
-  const availableHeight = innerHeight - safetyMargin * 2;
-
   container.style.left = `${x}px`;
   container.style.top = `${y}px`;
 
   const rect = container.getBoundingClientRect();
-  const width = rect.width;
-  const height = rect.height;
+  const maxX = window.scrollX + window.innerWidth;
+  const maxY = window.scrollY + window.innerHeight;
 
-  let adjustedLeft = x;
-  let adjustedTop = y;
-
-  const minLeft = scrollX + safetyMargin;
-  const minTop = scrollY + safetyMargin;
-  const maxLeft = scrollX + innerWidth - safetyMargin - width;
-  const maxTop = scrollY + innerHeight - safetyMargin - height;
-
-  if (width > availableWidth) {
-    adjustedLeft = scrollX + Math.max(safetyMargin, (innerWidth - width) / 2);
-  } else {
-    adjustedLeft = Math.min(adjustedLeft, maxLeft);
-    adjustedLeft = Math.max(adjustedLeft, minLeft);
+  if (rect.right > maxX) {
+    container.style.left = `${Math.max(0, maxX - rect.width)}px`;
   }
-
-  if (height > availableHeight) {
-    adjustedTop = minTop;
-  } else {
-    adjustedTop = Math.min(adjustedTop, maxTop);
-    adjustedTop = Math.max(adjustedTop, minTop);
+  if (rect.bottom > maxY) {
+    container.style.top = `${Math.max(0, maxY - rect.height)}px`;
   }
-
-  const horizontalOrigin = adjustedLeft < x ? 'right' : 'left';
-  const verticalOrigin = adjustedTop < y ? 'bottom' : 'top';
-
-  container.style.left = `${adjustedLeft}px`;
-  container.style.top = `${adjustedTop}px`;
-  container.style.transformOrigin = `${verticalOrigin} ${horizontalOrigin}`;
 }
 
 function hideMenu() {
