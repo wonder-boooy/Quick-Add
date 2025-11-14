@@ -20,7 +20,7 @@ body {
 
 .popup {
   width: 100%;
-  max-width: 360px;
+  max-width: 420px;
   margin: 0 auto;
   padding: 20px;
   display: flex;
@@ -208,15 +208,23 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px 8px;
+  padding: 6px;
   border-radius: 10px;
   background: rgba(15, 23, 42, 0.04);
   color: rgba(15, 23, 42, 0.45);
-  font-size: 16px;
-  letter-spacing: 0.24em;
+  flex-shrink: 0;
   user-select: none;
   cursor: grab;
   transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.menu-list__handle-icon {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background-color: currentColor;
+  box-shadow: 0 5px 0 currentColor, 0 10px 0 currentColor, 6px 0 0 currentColor,
+    6px 5px 0 currentColor, 6px 10px 0 currentColor;
 }
 
 .menu-list__item:focus-visible {
