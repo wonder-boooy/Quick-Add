@@ -1,5 +1,6 @@
 const MENU_CONTAINER_ID = 'quick-add-calendar-menu';
 const LOADING_OVERLAY_ID = 'quick-add-loading';
+const MENU_VIEWPORT_PADDING = 12;
 
 let menuItems = [];
 let menuElement;
@@ -59,15 +60,31 @@ function showMenu(x, y) {
   container.style.top = `${y}px`;
 
   const rect = container.getBoundingClientRect();
-  const maxX = window.scrollX + window.innerWidth;
-  const maxY = window.scrollY + window.innerHeight;
+  const padding = MENU_VIEWPORT_PADDING;
+  const scrollLeft = window.scrollX;
+  const scrollTop = window.scrollY;
+  const minLeft = scrollLeft + padding;
+  const minTop = scrollTop + padding;
+  const maxLeft = scrollLeft + window.innerWidth - rect.width - padding;
+  const maxTop = scrollTop + window.innerHeight - rect.height - padding;
 
-  if (rect.right > maxX) {
-    container.style.left = `${Math.max(0, maxX - rect.width)}px`;
+  let adjustedLeft = x;
+  let adjustedTop = y;
+
+  if (rect.width + padding * 2 > window.innerWidth) {
+    adjustedLeft = scrollLeft + padding;
+  } else {
+    adjustedLeft = Math.min(Math.max(adjustedLeft, minLeft), maxLeft);
   }
-  if (rect.bottom > maxY) {
-    container.style.top = `${Math.max(0, maxY - rect.height)}px`;
+
+  if (rect.height + padding * 2 > window.innerHeight) {
+    adjustedTop = scrollTop + padding;
+  } else {
+    adjustedTop = Math.min(Math.max(adjustedTop, minTop), maxTop);
   }
+
+  container.style.left = `${adjustedLeft}px`;
+  container.style.top = `${adjustedTop}px`;
 }
 
 function hideMenu() {
