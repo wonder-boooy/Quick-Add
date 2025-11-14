@@ -1,0 +1,51 @@
+#quick-add-calendar-menu {
+  position: absolute;
+  z-index: 99999;
+  min-width: 160px;
+  background-color: #ffffff;
+  color: #202124;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(60, 64, 67, 0.3);
+  font-family: 'Roboto', 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(60, 64, 67, 0.2);
+}
+
+#quick-add-calendar-menu.hidden {
+  display: none;
+}
+
+.quick-add-menu__list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.quick-add-menu__item {
+  margin: 0;
+  padding: 0;
+}
+
+.quick-add-menu__button {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.quick-add-menu__button:hover,
+.quick-add-menu__button:focus {
+  background-color: rgba(66, 133, 244, 0.08);
+  outline: none;
+}
+
+.quick-add-menu__empty {
+  padding: 12px 16px;
+  color: rgba(60, 64, 67, 0.7);
+}
