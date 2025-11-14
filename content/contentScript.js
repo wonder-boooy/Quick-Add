@@ -1,6 +1,10 @@
 const MENU_CONTAINER_ID = 'quick-add-calendar-menu';
+const LOADING_OVERLAY_ID = 'quick-add-loading';
+
 let menuItems = [];
 let menuElement;
+let loadingElement;
+let lastContextEvent = null;
 
 function createMenuElement() {
   if (menuElement) {
@@ -77,11 +81,46 @@ function isClickInsideMenu(event) {
   return menuElement && menuElement.contains(event.target);
 }
 
+function createLoadingElement() {
+  if (loadingElement) {
+    return loadingElement;
+  }
+  const overlay = document.createElement('div');
+  overlay.id = LOADING_OVERLAY_ID;
+  overlay.className = 'quick-add-loading hidden';
+  overlay.setAttribute('aria-hidden', 'true');
+
+  const spinner = document.createElement('div');
+  spinner.className = 'quick-add-loading__spinner';
+  overlay.appendChild(spinner);
+
+  document.body.appendChild(overlay);
+  loadingElement = overlay;
+  return overlay;
+}
+
+function showLoadingIndicator() {
+  const overlay = createLoadingElement();
+  overlay.classList.remove('hidden');
+}
+
+function hideLoadingIndicator() {
+  if (!loadingElement) {
+    return;
+  }
+  loadingElement.classList.add('hidden');
+}
+
 async function handleMenuSelection(label) {
   try {
-    await openCreateDialog(label);
+    showLoadingIndicator();
+    const context = lastContextEvent;
+    lastContextEvent = null;
+    await openCreateDialog(label, context);
   } catch (error) {
     console.error('Failed to prepare Google Calendar event dialog', error);
+  } finally {
+    hideLoadingIndicator();
   }
 }
 
@@ -160,21 +199,88 @@ function findTitleInput() {
   return null;
 }
 
-async function openCreateDialog(defaultTitle) {
-  let input = findTitleInput();
-  if (!input) {
-    const createButton = findCreateButton();
-    if (createButton) {
-      createButton.click();
-    }
-    input = await waitForTitleInput();
+function simulatePrimaryClick(target, { clientX, clientY }) {
+  if (!target) {
+    return;
   }
+  const baseOptions = {
+    bubbles: true,
+    cancelable: true,
+    view: window,
+    clientX,
+    clientY,
+    button: 0,
+    buttons: 1
+  };
+  if (window.PointerEvent) {
+    const pointerOptions = {
+      ...baseOptions,
+      pointerId: 1,
+      pointerType: 'mouse',
+      isPrimary: true
+    };
+    target.dispatchEvent(new PointerEvent('pointerdown', pointerOptions));
+    target.dispatchEvent(new PointerEvent('pointerup', pointerOptions));
+  }
+  target.dispatchEvent(new MouseEvent('mousedown', baseOptions));
+  target.dispatchEvent(new MouseEvent('mouseup', baseOptions));
+  target.dispatchEvent(new MouseEvent('click', baseOptions));
+}
+
+function triggerInlineEditor(context) {
+  if (!context) {
+    return;
+  }
+  const { clientX, clientY, target } = context;
+  let candidate = null;
+  if (target instanceof Element) {
+    candidate = target.closest('[role="gridcell"], [data-dragsource-type="time-grid"], .tEhMVd, .lFe10d');
+  }
+  if (!candidate) {
+    candidate = document.elementFromPoint(clientX, clientY);
+  }
+  if (!candidate || !(candidate instanceof Element)) {
+    return;
+  }
+  if (typeof candidate.focus === 'function') {
+    try {
+      candidate.focus({ preventScroll: true });
+    } catch (error) {
+      // ignore inability to focus
+    }
+  }
+  simulatePrimaryClick(candidate, { clientX, clientY });
+}
+
+async function prepareEventInput(context) {
+  let input = findTitleInput();
+  if (input) {
+    return input;
+  }
+
+  triggerInlineEditor(context);
+  input = await waitForTitleInput(2500);
+  if (input) {
+    return input;
+  }
+
+  const createButton = findCreateButton();
+  if (createButton) {
+    createButton.click();
+    input = await waitForTitleInput(3000);
+    if (input) {
+      return input;
+    }
+  }
+
+  return findTitleInput();
+}
+
+async function openCreateDialog(defaultTitle, context) {
+  const input = await prepareEventInput(context);
 
   if (!input) {
     console.warn('Quick Add: failed to locate Google Calendar title input');
-    const editUrl = new URL('/calendar/u/0/r/eventedit', window.location.origin);
-    editUrl.searchParams.set('text', defaultTitle);
-    window.open(editUrl.toString(), '_blank', 'noopener,noreferrer');
     return;
   }
 
@@ -226,6 +332,11 @@ function handleContextMenu(event) {
     return;
   }
   event.preventDefault();
+  lastContextEvent = {
+    target: event.target,
+    clientX: event.clientX,
+    clientY: event.clientY
+  };
   renderMenuItems();
   showMenu(event.pageX, event.pageY);
 }
